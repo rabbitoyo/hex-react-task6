@@ -1,0 +1,49 @@
+.notfound {
+    position: relative;
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: url('https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=2000&auto=format&fit=crop')
+            no-repeat center;
+        background-size: cover;
+        opacity: 0.08;
+        z-index: 0;
+    }
+
+    .notfound-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: rgba($primary, 0.15);
+        font-family: $font-family-montserrat;
+        font-size: 30vw;
+        font-weight: 600;
+        pointer-events: none;
+        opacity: 0.75;
+        z-index: 1;
+
+        @include media-breakpoint-down(xl) {
+            font-size: 40vw;
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: 50vw;
+        }
+
+        @include media-breakpoint-down(sm) {
+            margin-top: -20vw;
+        }
+    }
+    .container {
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
+}

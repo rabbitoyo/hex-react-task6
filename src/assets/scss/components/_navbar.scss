@@ -1,0 +1,88 @@
+.navbar {
+    border-bottom: 1px solid rgba($white, 0.8);
+    background-color: rgba($white, 0.75);
+    backdrop-filter: blur(5px);
+    transition: 0.25s ease-in-out;
+
+    .navbar-brand {
+        padding: 0;
+        color: rgba($black, 0.8);
+    }
+
+    .navbar-toggler,
+    .navbar-toggler:focus-visible {
+        border: none;
+        box-shadow: none;
+        outline: none;
+    }
+
+    .nav-link {
+        color: rgba($black, 0.8);
+
+        &:hover {
+            color: rgba($black, 0.6);
+        }
+
+        &.active {
+            color: $primary;
+        }
+    }
+
+    &.lighten {
+        border-bottom: 1px solid rgba($white, 0.9);
+        background-color: rgba($white, 0.85);
+    }
+
+    img {
+        max-width: 55px;
+
+        @include media-breakpoint-down(md) {
+            max-width: 50px;
+        }
+    }
+
+    .link-primary {
+        padding: 0.25rem;
+        line-height: 0;
+        text-decoration: none;
+
+        &:hover span {
+            text-decoration: underline;
+        }
+
+        &:hover .badge {
+            text-decoration: none;
+        }
+
+        .badge {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 15px;
+            height: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+    }
+
+    .offcanvas {
+        border: none;
+        min-height: 100vh;
+        background-color: rgba($white, 0.98);
+    }
+
+    .offcanvas-header {
+        border-bottom: 1px solid rgba($black, 0.05);
+    }
+
+    .offcanvas-body {
+        padding: 1.5rem;
+    }
+
+    .btn-close {
+        margin: 0 auto;
+        margin-right: 0;
+        padding: 0.5rem;
+    }
+}

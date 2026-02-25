@@ -1,0 +1,130 @@
+.products {
+    position: relative;
+    background: $white;
+    overflow: hidden;
+
+    @include media-breakpoint-down(sm) {
+        overflow: visible;
+    }
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url('https://images.unsplash.com/photo-1498307833015-e7b400441eb8?q=80&w=2000&auto=format&fit=crop')
+            no-repeat center;
+        background-size: cover;
+        background-attachment: fixed;
+        opacity: 0.08;
+        filter: grayscale(100%);
+        pointer-events: none;
+    }
+
+    .card {
+        border: none;
+        text-decoration: none;
+        height: 100%;
+
+        .text-small {
+            letter-spacing: 0.25em;
+        }
+
+        &:hover .card-img-top img {
+            transform: scale(1.05);
+        }
+    }
+
+    .card-img-top {
+        max-height: 250px;
+        min-height: 250px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        overflow: hidden;
+
+        img {
+            max-height: 250px;
+            min-height: 250px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: 0.2s ease-in-out;
+        }
+    }
+
+    .ticket-divider {
+        position: relative;
+        height: 24px;
+        display: flex;
+        align-items: center;
+    }
+
+    .ticket-hole-l,
+    .ticket-hole-r {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: #f8fafc;
+        border: 1px solid #dee2e6;
+        border-radius: 50%;
+        z-index: 2;
+    }
+
+    .ticket-hole-l {
+        left: -12px;
+    }
+
+    .ticket-hole-r {
+        right: -12px;
+    }
+
+    .border-dashed {
+        border-top: 2px dashed #dee2e6;
+    }
+}
+
+.ProductLoading {
+    display: flex;
+    position: relative;
+    pointer-events: none;
+    z-index: 2;
+
+    .lottie {
+        width: 400px;
+        height: 350px;
+    }
+
+    .loading-text {
+        letter-spacing: 2px;
+        animation: text-pulse 1.5s infinite;
+    }
+
+    @keyframes text-pulse {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+}
+
+.isLoaded {
+    animation: fadeIn 0.5s ease-in-out;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}

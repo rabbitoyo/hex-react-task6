@@ -1,0 +1,37 @@
+.popularProducts {
+    position: relative;
+    background: $white;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url('https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?q=80&w=2000&auto=format&fit=crop')
+            no-repeat center;
+        background-size: cover;
+        background-attachment: fixed;
+        opacity: 0.08;
+        filter: grayscale(100%);
+    }
+
+    .container {
+        position: relative;
+    }
+
+    .products {
+        background: none;
+
+        &::before {
+            display: none;
+        }
+    }
+
+    .card {
+        border: none;
+    }
+}

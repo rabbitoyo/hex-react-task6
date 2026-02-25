@@ -1,0 +1,31 @@
+// bootstrap
+@import 'bootstrap/scss/functions';
+@import './utils/variables';
+@import 'bootstrap';
+
+// utils
+@import './utils/utilities';
+
+// base
+@import './base/base';
+
+// components
+@import './components/form';
+@import './components/button';
+@import './components/modal';
+@import './components/navbar';
+@import './components/pagination';
+
+// layout
+@import './layout/header';
+@import './layout/footer';
+
+// pages
+@import './pages/loading';
+@import './pages/login';
+@import './pages/home';
+@import './pages/products';
+@import './pages/productdetail';
+@import './pages/cart';
+@import './pages/dashboard';
+@import './pages/notfound';

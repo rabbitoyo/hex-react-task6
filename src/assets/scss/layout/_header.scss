@@ -1,0 +1,118 @@
+.header {
+    position: relative;
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(to bottom, rgba($white, 0.7) 60%, transparent);
+        z-index: 1;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+
+        h2 {
+            letter-spacing: 0.5rem;
+
+            .text-medium {
+                color: darken($primary, 5%);
+                background: linear-gradient(to right, $primary, #1e40af);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 800;
+            }
+        }
+
+        p {
+            letter-spacing: 0.65rem;
+            opacity: 0.5;
+        }
+
+        .btn {
+            border-radius: 0.75rem;
+            padding: 1rem 5.5rem;
+            font-size: 1.25rem;
+        }
+
+        @include media-breakpoint-down(lg) {
+            h2 {
+                letter-spacing: 0.25rem;
+            }
+
+            p {
+                letter-spacing: 0.5rem;
+            }
+
+            .btn {
+                border-radius: 0.75rem;
+                padding: 1rem 4rem;
+                font-size: 1rem;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                letter-spacing: initial;
+            }
+
+            p {
+                letter-spacing: 0.25rem;
+            }
+
+            .btn {
+                border-radius: 0.5rem;
+                padding: 0.75rem 2.75rem;
+            }
+        }
+    }
+
+    .scroll-indicator {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        animation: bounce 1s infinite;
+
+        &__track {
+            border: 2px solid rgba($white, 0.65);
+            border-radius: 50px;
+            width: 24px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            padding: 0.25rem;
+        }
+
+        &__dot {
+            border-radius: 50%;
+            width: 4px;
+            height: 8px;
+            background-color: rgba($white, 0.85);
+        }
+
+        .material-symbols-outlined {
+            color: rgba($white, 0.85);
+        }
+    }
+
+    // bounce animation
+    @keyframes bounce {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(4px);
+        }
+    }
+}
