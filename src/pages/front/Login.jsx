@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 
 // Utils
-import { setToken, getErrorMessage } from '../../utils';
+import { setToken, getErrorMessage, emailValidation } from '../../utils';
 
 // API
 import { loginApi } from '../../api/auth';
@@ -14,7 +14,7 @@ const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm({
         mode: 'onChange',
         defaultValues: {
@@ -91,13 +91,7 @@ const Login = () => {
                                         name="username"
                                         className="form-control bg-white rounded-sm"
                                         placeholder="請輸入 Email"
-                                        {...register('username', {
-                                            required: '請輸入您的電子郵件',
-                                            pattern: {
-                                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                                message: 'Email 格式不正確',
-                                            },
-                                        })}
+                                        {...register('username', emailValidation)}
                                         autoFocus
                                     />
                                     <span className="material-symbols-outlined">mail</span>
@@ -134,6 +128,7 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     className="btn btn-primary btn-lg rounded-sm fw-semibold py-3 mt-7 mt-lg-10"
+                                    disabled={!isValid}
                                 >
                                     登入
                                 </button>

@@ -21,6 +21,9 @@
         // active-border
         $white // active-color
     );
+    &:disabled {
+        color: rgba($white, 0.85);
+    }
 }
 .btn-outline-primary {
     @include button-outline-variant(
