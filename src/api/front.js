@@ -24,3 +24,6 @@ export const deleteCartApi = (id) => frontApi.delete(`cart/${id}`);
 
 // 刪除所有品項購物車
 export const deleteCartAllApi = () => frontApi.delete('carts');
+
+// 送出訂單
+export const submitOrderApi = (data) => frontApi.post('order', { data });

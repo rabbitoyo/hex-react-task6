@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import DOMPurify from 'dompurify';
 import { useCart } from '../../context/useCart';
+import { ThreeDots } from 'react-loader-spinner';
 
 // Utils
 import { getErrorMessage, formatNumber } from '../../utils';
@@ -11,6 +12,7 @@ import { getProductDetailApi } from '../../api/front';
 
 const ProductDetail = () => {
     const [product, setProduct] = useState({});
+    const [loadingCartId, setLoadingCartId] = useState(null);
     const [qty, setQty] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -29,11 +31,18 @@ const ProductDetail = () => {
     }, [id]);
 
     // 加入購物車
-    const handleAddToCart = async (productId, quantity) => {
-        const res = await addToCart(productId, quantity);
-        if (res?.data?.success) {
-            alert(`${res?.data?.message}！`);
-            navigate('/cart');
+    const handleAddToCart = async (id, qty) => {
+        setLoadingCartId(id);
+        try {
+            const res = await addToCart(id, qty);
+            if (res?.data?.success) {
+                alert(`${res?.data?.message}！`);
+                navigate('/cart');
+            }
+        } catch (error) {
+            alert(`API 錯誤：${getErrorMessage(error)}!`);
+        } finally {
+            setLoadingCartId(null);
         }
     };
 
@@ -172,8 +181,16 @@ const ProductDetail = () => {
                                             type="button"
                                             className="btn btn-primary w-100 py-4 fs-10 fw-bold"
                                             onClick={() => handleAddToCart(product.id, qty)}
+                                            disabled={loadingCartId === product.id}
                                         >
-                                            立即預訂
+                                            {loadingCartId === product.id ? (
+                                                <div className="d-flex justify-content-center align-items-center gap-2">
+                                                    <span className="text-white fs-11">加入中</span>
+                                                    <ThreeDots color="white" width="30" height="16" />
+                                                </div>
+                                            ) : (
+                                                '立即預訂'
+                                            )}
                                         </button>
                                         <button
                                             type="button"

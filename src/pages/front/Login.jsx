@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
 
 // Utils
 import { setToken, getErrorMessage } from '../../utils';
@@ -9,20 +9,24 @@ import { loginApi } from '../../api/auth';
 
 // Login 元件
 const Login = () => {
-    const [account, setAccount] = useState({ username: '', password: '' });
     const navigate = useNavigate();
 
-    // 拿到用戶 input 的 value
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setAccount((prevData) => ({ ...prevData, [name]: value }));
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            username: '',
+            password: '',
+        },
+    });
 
     // 登入
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (formData) => {
         try {
-            const res = await loginApi(account);
+            const res = await loginApi(formData);
 
             // token - 儲存 Token 到 Cookie
             const { token, expired } = res.data;
@@ -65,7 +69,10 @@ const Login = () => {
                                 </p>
                             </div>
 
-                            <form className="d-flex flex-column gap-3 gap-lg-2" onSubmit={handleLogin}>
+                            <form
+                                className="d-flex flex-column gap-3 gap-lg-2"
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
                                 <div className="form-group">
                                     <label
                                         className="form-label text-muted small fw-semibold mb-1 mb-lg-2"
@@ -73,16 +80,25 @@ const Login = () => {
                                     >
                                         電子郵件
                                     </label>
+                                    {errors.username && (
+                                        <span className="text-danger small ms-2">
+                                            ({errors.username.message})
+                                        </span>
+                                    )}
                                     <input
                                         type="email"
-                                        className="form-control bg-white rounded-sm"
-                                        name="username"
-                                        value={account.username}
-                                        onChange={handleInputChange}
                                         id="username"
+                                        name="username"
+                                        className="form-control bg-white rounded-sm"
                                         placeholder="請輸入 Email"
+                                        {...register('username', {
+                                            required: '請輸入您的電子郵件',
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                                message: 'Email 格式不正確',
+                                            },
+                                        })}
                                         autoFocus
-                                        required
                                     />
                                     <span className="material-symbols-outlined">mail</span>
                                 </div>
@@ -93,15 +109,24 @@ const Login = () => {
                                     >
                                         密碼
                                     </label>
+                                    {errors.password && (
+                                        <span className="text-danger small ms-2">
+                                            ({errors.password.message})
+                                        </span>
+                                    )}
                                     <input
                                         type="password"
-                                        className="form-control bg-white rounded-sm"
-                                        name="password"
-                                        value={account.password}
-                                        onChange={handleInputChange}
                                         id="password"
+                                        name="password"
+                                        className="form-control bg-white rounded-sm"
                                         placeholder="請輸入密碼"
-                                        required
+                                        {...register('password', {
+                                            required: '請輸入密碼',
+                                            minLength: {
+                                                value: 6,
+                                                message: '密碼至少需要 6 個字元',
+                                            },
+                                        })}
                                     />
                                     <span className="material-symbols-outlined">lock_person</span>
                                 </div>
