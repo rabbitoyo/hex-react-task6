@@ -164,7 +164,7 @@ const Cart = () => {
                                             className="btn btn-light w-100 py-4 fs-10 fw-bold"
                                             onClick={() => navigate('/product')}
                                         >
-                                            返回列表
+                                            繼續購物
                                         </button>
                                     </div>
                                 </div>

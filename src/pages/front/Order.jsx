@@ -212,7 +212,7 @@ const Order = () => {
                                             className="btn btn-light w-100 py-4 fs-10 fw-bold"
                                             onClick={() => navigate('/cart')}
                                         >
-                                            返回清單
+                                            返回購物清單
                                         </button>
                                     </div>
                                 </div>
