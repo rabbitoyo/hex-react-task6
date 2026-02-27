@@ -27,3 +27,12 @@ export const deleteCartAllApi = () => frontApi.delete('carts');
 
 // 送出訂單
 export const submitOrderApi = (data) => frontApi.post('order', { data });
+
+// 取得訂單
+export const getOrdersApi = () => frontApi.get('orders');
+
+// 取得訂單詳細資料
+export const getOrderDetailApi = (id) => frontApi.get(`order/${id}`);
+
+// 付款
+export const payOrderApi = (id) => frontApi.post(`pay/${id}`);

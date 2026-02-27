@@ -18,7 +18,7 @@ const Order = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm({ mode: 'onChange' });
 
     const onSubmit = async (formData) => {
@@ -76,7 +76,7 @@ const Order = () => {
                                                     type="text"
                                                     id="name"
                                                     name="name"
-                                                    className="form-control"
+                                                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                                                     placeholder="請輸入您的姓名"
                                                     defaultValue="Rabbit"
                                                     {...register('name', {
@@ -101,7 +101,7 @@ const Order = () => {
                                                     type="email"
                                                     id="email"
                                                     name="email"
-                                                    className="form-control"
+                                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                                                     placeholder="請輸入您的電子郵件"
                                                     defaultValue="example@gmail.com"
                                                     {...register('email', emailValidation)}
@@ -122,7 +122,7 @@ const Order = () => {
                                             type="tel"
                                             id="tel"
                                             name="tel"
-                                            className="form-control"
+                                            className={`form-control ${errors.tel ? 'is-invalid' : ''}`}
                                             placeholder="請輸入您的聯絡電話"
                                             defaultValue="0912345678"
                                             {...register('tel', {
@@ -148,7 +148,7 @@ const Order = () => {
                                             type="text"
                                             id="address"
                                             name="address"
-                                            className="form-control"
+                                            className={`form-control ${errors.address ? 'is-invalid' : ''}`}
                                             placeholder="請輸入您的通訊地址"
                                             defaultValue="台北市信義區松仁路100號"
                                             {...register('address', {
@@ -177,11 +177,20 @@ const Order = () => {
                             {cart.carts.length > 0 && (
                                 <div className="cartPrice bg-white w-100 rounded-4 border p-5 p-lg-8 mb-5">
                                     <div className="d-flex flex-column row-gap-6 border-bottom mb-4 pb-6">
-                                        <p className="fs-9 fs-lg-8 fw-bold">訂單摘要</p>
+                                        <p className="fs-9 fs-lg-8 fw-bold">清單摘要</p>
                                         <div className="d-flex flex-column row-gap-3">
+                                            {cart.carts.map((item) => (
+                                                <div className="d-flex justify-content-between  fw-bold font-montserrat">
+                                                    <p className="text-muted">
+                                                        {item.product.title}
+                                                        <span className="ms-1">x{item.qty}</span>
+                                                    </p>
+                                                    <p>${formatNumber(item.total)}</p>
+                                                </div>
+                                            ))}
                                             <p className="d-flex justify-content-between  fw-bold font-montserrat">
-                                                <span className="text-muted">小計</span>
-                                                <span>$ {formatNumber(cart.total)}</span>
+                                                <span className="text-muted">折扣</span>
+                                                <span>$ 0</span>
                                             </p>
                                         </div>
                                     </div>
@@ -194,6 +203,7 @@ const Order = () => {
                                             type="submit"
                                             form="orderForm"
                                             className="btn btn-primary w-100 py-4 fs-10 fw-bold"
+                                            disabled={!isValid}
                                         >
                                             前往結帳
                                         </button>
@@ -202,7 +212,7 @@ const Order = () => {
                                             className="btn btn-light w-100 py-4 fs-10 fw-bold"
                                             onClick={() => navigate('/cart')}
                                         >
-                                            返回訂單
+                                            返回清單
                                         </button>
                                     </div>
                                 </div>

@@ -130,12 +130,17 @@ const Cart = () => {
                             {cart.carts.length > 0 && (
                                 <div className="cartPrice bg-white w-100 rounded-4 border p-5 p-lg-8 mb-5">
                                     <div className="d-flex flex-column row-gap-6 border-bottom mb-4 pb-6">
-                                        <p className="fs-9 fs-lg-8 fw-bold">結算摘要</p>
+                                        <p className="fs-9 fs-lg-8 fw-bold">清單摘要</p>
                                         <div className="d-flex flex-column row-gap-3">
-                                            <p className="d-flex justify-content-between  fw-bold font-montserrat">
-                                                <span className="text-muted">小計</span>
-                                                <span>$ {formatNumber(cart.total)}</span>
-                                            </p>
+                                            {cart.carts.map((item) => (
+                                                <div className="d-flex justify-content-between  fw-bold font-montserrat">
+                                                    <p className="text-muted">
+                                                        {item.product.title}
+                                                        <span className="ms-1">x{item.qty}</span>
+                                                    </p>
+                                                    <p>${formatNumber(item.total)}</p>
+                                                </div>
+                                            ))}
                                             <p className="d-flex justify-content-between  fw-bold font-montserrat">
                                                 <span className="text-muted">折扣</span>
                                                 <span>$ 0</span>

@@ -9,6 +9,7 @@ import ProductDetail from '../pages/front/ProductDetail';
 import Notes from '../pages/front/Notes';
 import Cart from '../pages/front/Cart';
 import Order from '../pages/front/Order';
+import Confirm from '../pages/front/Confirm';
 import Login from '../pages/front/Login';
 import AdminLayout from '../layouts/AdminLayout';
 import Dashboard from '../pages/admin/Dashboard';
@@ -27,6 +28,7 @@ const router = createHashRouter([
             { path: 'notes', element: <Notes /> },
             { path: 'cart', element: <Cart /> },
             { path: 'order', element: <Order /> },
+            { path: 'confirm', element: <Confirm /> },
             { path: 'login', element: <Login /> },
         ],
     },
