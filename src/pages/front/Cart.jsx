@@ -8,7 +8,8 @@ import { formatNumber } from '../../utils';
 import ProductLoading from '../../components/common/ProductLoading';
 
 const Cart = () => {
-    const { cart, isLoading, isFirstRender, updateCart, deleteCart, deleteCartAll } = useCart();
+    const { cart, isLoading, isFirstRender, updatingItems, updateCart, deleteCart, deleteCartAll } =
+        useCart();
     const navigate = useNavigate();
 
     if (isFirstRender) return null;
@@ -65,7 +66,9 @@ const Cart = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-outline-primary rounded-pill p-0"
-                                                            disabled={item.qty <= 1}
+                                                            disabled={
+                                                                item.qty <= 1 || updatingItems.has(item.id)
+                                                            }
                                                             onClick={() =>
                                                                 updateCart(
                                                                     item.id,
@@ -84,6 +87,7 @@ const Cart = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-outline-primary rounded-pill p-0"
+                                                            disabled={updatingItems.has(item.id)}
                                                             onClick={() =>
                                                                 updateCart(
                                                                     item.id,
