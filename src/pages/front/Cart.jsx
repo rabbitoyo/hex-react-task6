@@ -1,6 +1,8 @@
 import { useCart } from '../../context/useCart';
 import { useNavigate, Link } from 'react-router';
 
+import { ThreeDots } from 'react-loader-spinner';
+
 // utils
 import { formatNumber } from '../../utils';
 
@@ -8,8 +10,16 @@ import { formatNumber } from '../../utils';
 import ProductLoading from '../../components/common/ProductLoading';
 
 const Cart = () => {
-    const { cart, isLoading, isFirstRender, updatingItems, updateCart, deleteCart, deleteCartAll } =
-        useCart();
+    const {
+        cart,
+        isLoading,
+        isFirstRender,
+        updatingItems,
+        updateCart,
+        deleteCart,
+        deleteCartAll,
+        isDeletingAll,
+    } = useCart();
     const navigate = useNavigate();
 
     if (isFirstRender) return null;
@@ -27,8 +37,8 @@ const Cart = () => {
 
                     {/* 空清單：不跑 loading 且沒東西時顯示 */}
                     {!isLoading && cart.carts.length === 0 && (
-                        <div className="bg-white rounded-4 border py-15 mb-15 text-center">
-                            <h3 className="text-muted fs-6 fw-semibold mb-2">購物清單目前是空的</h3>
+                        <div className="bg-white rounded-4 border py-10 py-sm-15 px-5 mb-15 text-center">
+                            <h3 className="text-muted fs-8 fs-sm-6 fw-semibold mb-2">購物清單目前是空的</h3>
                             <p className="text-muted mb-6">去探索我們的精選系列，找尋您的下一段旅程。</p>
                             <Link to="/product" className="btn btn-primary px-10 py-3">
                                 前往套票行程
@@ -48,10 +58,13 @@ const Cart = () => {
                                             key={item.id}
                                         >
                                             <div className="cart-img">
-                                                <img src={item.product.imageUrl} alt={item.product.title} />
+                                                <img
+                                                    src={`${item.product.imageUrl}?q=80&w=150&auto=format&fit=crop`}
+                                                    alt={item.product.title}
+                                                />
                                             </div>
 
-                                            <div className="d-flex flex-column flex-md-row gap-md-10">
+                                            <div className="d-flex flex-column flex-md-row gap-md-10 row-gap-1 row-gap-sm-3">
                                                 <div className="d-flex flex-column me-auto gap-md-2">
                                                     <p className="fs-10 fs-md-9 fw-bold">
                                                         {item.product.title}
@@ -61,7 +74,7 @@ const Cart = () => {
                                                     </span>
                                                 </div>
 
-                                                <div className="cart-edit d-flex justify-content-between align-items-center gap-4 w-100">
+                                                <div className="cart-edit d-flex justify-content-between align-items-center gap-2 gap-sm-4 flex-grow-1">
                                                     <div className="d-flex justify-content-between align-items-center rounded-4 gap-2">
                                                         <button
                                                             type="button"
@@ -105,12 +118,26 @@ const Cart = () => {
                                                     <div className="ms-auto">
                                                         <button
                                                             type="button"
-                                                            className="btn text-danger p-0 fs-10"
+                                                            className="btn btn-outline-danger d-flex align-items-center px-1 py-0 px-sm-2 py-sm-1 text-nowrap fs-12"
                                                             onClick={() => deleteCart(item.id)}
                                                         >
-                                                            <span className="material-symbols-outlined">
-                                                                delete
-                                                            </span>
+                                                            {updatingItems.has(item.id) ? (
+                                                                <div className="d-flex justify-content-center align-items-center">
+                                                                    <span className="fs-12 me-1">刪除中</span>
+                                                                    <ThreeDots
+                                                                        color="currentColor"
+                                                                        width="15"
+                                                                        height="8"
+                                                                    />
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                    <span className="material-symbols-outlined fs-11 me-sm-1">
+                                                                        delete
+                                                                    </span>
+                                                                    刪除
+                                                                </>
+                                                            )}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -123,8 +150,22 @@ const Cart = () => {
                                             type="button"
                                             className="btn btn-outline-danger fs-11 fw-bold"
                                             onClick={deleteCartAll}
+                                            disabled={isDeletingAll}
                                         >
-                                            清除全部
+                                            {isDeletingAll ? (
+                                                <>
+                                                    <div className="d-flex justify-content-center align-items-center">
+                                                        <span className="fs-11 me-1">清除中</span>
+                                                        <ThreeDots
+                                                            color="currentColor"
+                                                            width="30"
+                                                            height="16"
+                                                        />
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                '清除全部'
+                                            )}
                                         </button>
                                     </div>
                                 </>

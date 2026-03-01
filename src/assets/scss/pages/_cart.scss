@@ -26,13 +26,6 @@
         }
     }
 
-    .cart-edit {
-        max-width: 200px;
-        @include media-breakpoint-down(md) {
-            max-width: 100%;
-        }
-    }
-
     .btn-outline-primary,
     .text-danger {
         line-height: 0;

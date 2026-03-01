@@ -8,6 +8,7 @@ export const CartProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFirstRender, setIsFirstRender] = useState(true);
     const [updatingItems, setUpdatingItems] = useState(new Set());
+    const [isDeletingAll, setIsDeletingAll] = useState(false);
 
     // 取得購物車資料
     const getCart = useCallback(async (showLoading = false) => {
@@ -85,10 +86,20 @@ export const CartProvider = ({ children }) => {
     const deleteCart = useCallback(
         async (cartId) => {
             try {
+                // 標記為更新中
+                setUpdatingItems((prev) => new Set(prev).add(cartId));
+
                 await deleteCartApi(cartId);
                 await getCart(false);
             } catch (error) {
                 alert(`API 錯誤：${getErrorMessage(error)}!`);
+            } finally {
+                // 移除更新中標記
+                setUpdatingItems((prev) => {
+                    const next = new Set(prev);
+                    next.delete(cartId);
+                    return next;
+                });
             }
         },
         [getCart]
@@ -96,11 +107,14 @@ export const CartProvider = ({ children }) => {
 
     // 刪除所有品項
     const deleteCartAll = useCallback(async () => {
+        setIsDeletingAll(true);
         try {
             await deleteCartAllApi();
             await getCart(false);
         } catch (error) {
             alert(`API 錯誤：${getErrorMessage(error)}!`);
+        } finally {
+            setIsDeletingAll(false);
         }
     }, [getCart]);
 
@@ -119,6 +133,7 @@ export const CartProvider = ({ children }) => {
             updateCart,
             deleteCart,
             deleteCartAll,
+            isDeletingAll,
             getCart,
         }),
         [
@@ -130,6 +145,7 @@ export const CartProvider = ({ children }) => {
             updateCart,
             deleteCart,
             deleteCartAll,
+            isDeletingAll,
             getCart,
         ]
     );
