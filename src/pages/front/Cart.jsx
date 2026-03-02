@@ -15,6 +15,7 @@ const Cart = () => {
         isLoading,
         isFirstRender,
         updatingItems,
+        deletingItems,
         updateCart,
         deleteCart,
         deleteCartAll,
@@ -121,7 +122,7 @@ const Cart = () => {
                                                             className="btn btn-outline-danger d-flex align-items-center px-1 py-0 px-sm-2 py-sm-1 text-nowrap fs-12"
                                                             onClick={() => deleteCart(item.id)}
                                                         >
-                                                            {updatingItems.has(item.id) ? (
+                                                            {deletingItems.has(item.id) ? (
                                                                 <div className="d-flex justify-content-center align-items-center">
                                                                     <span className="fs-12 me-1">刪除中</span>
                                                                     <ThreeDots
