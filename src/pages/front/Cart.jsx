@@ -1,7 +1,7 @@
-import { useCart } from '../../context/useCart';
 import { useNavigate, Link } from 'react-router';
-
 import { ThreeDots } from 'react-loader-spinner';
+
+import { useCart } from '../../context/useCart';
 
 // utils
 import { formatNumber } from '../../utils';
@@ -33,8 +33,8 @@ const Cart = () => {
                         您的購物清單
                     </h2>
 
-                    {/* 只有正在 Loading 且畫面清單有東西時才顯示 Loading 組件 */}
-                    {isLoading && cart.carts.length > 0 && <ProductLoading />}
+                    {/* Loading */}
+                    {isLoading && <ProductLoading />}
 
                     {/* 空清單：不跑 loading 且沒東西時顯示 */}
                     {!isLoading && cart.carts.length === 0 && (

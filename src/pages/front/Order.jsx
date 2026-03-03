@@ -1,19 +1,21 @@
-import { useCart } from '../../context/useCart';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 
+import { ThreeDots } from 'react-loader-spinner';
+
+import { useCart } from '../../context/useCart';
+import { useOrder } from '../../context/useOrder';
+
 // utils
-import { getErrorMessage, formatNumber, emailValidation } from '../../utils';
+import { formatNumber, emailValidation } from '../../utils';
 
 // Components
 import ProductLoading from '../../components/common/ProductLoading';
 
-// Api
-import { submitOrderApi } from '../../api/front';
-
 const Order = () => {
     const { cart, getCart, isLoading, isFirstRender } = useCart();
+    const { submitOrder, isSubmitting } = useOrder();
     const navigate = useNavigate();
     const {
         register,
@@ -22,16 +24,14 @@ const Order = () => {
     } = useForm({ mode: 'onChange' });
 
     const onSubmit = async (formData) => {
-        try {
-            const res = await submitOrderApi({
-                user: formData,
-                message: formData.message,
-            });
+        const res = await submitOrder({
+            user: formData,
+            message: formData.message,
+        });
+        if (res?.data?.success) {
             alert(`${res?.data?.message || '訂單提交成功'}!`);
             getCart(true);
-            navigate('/', { replace: true });
-        } catch (error) {
-            alert(`API 錯誤：${getErrorMessage(error)}!`);
+            navigate(`/order/${res.data.orderId}`, { replace: true });
         }
     };
 
@@ -52,12 +52,13 @@ const Order = () => {
                         填寫旅客資料
                     </h2>
 
-                    {/* 只有正在 Loading 且畫面清單有東西時才顯示 Loading 組件 */}
-                    {isLoading && cart.carts.length > 0 && <ProductLoading />}
+                    {/* Loading */}
+                    {isLoading && <ProductLoading />}
 
                     <div
                         className={`row flex-xl-nowrap row-gap-6 g-xl-15 ${isLoading ? 'd-none' : 'isLoaded'}`}
                     >
+                        {/* 填寫旅客資料 */}
                         <div className="col-xl-8">
                             <div className="bg-white rounded-4 border p-5 p-lg-8">
                                 <form id="orderForm" onSubmit={handleSubmit(onSubmit)}>
@@ -177,6 +178,8 @@ const Order = () => {
                                 </form>
                             </div>
                         </div>
+
+                        {/* 清單摘要 */}
                         <div className="col-xl-4">
                             {cart.carts.length > 0 && (
                                 <div className="cartPrice bg-white w-100 rounded-4 border p-5 p-lg-8 mb-5">
@@ -184,7 +187,10 @@ const Order = () => {
                                         <p className="fs-9 fs-lg-8 fw-bold">清單摘要</p>
                                         <div className="d-flex flex-column row-gap-3">
                                             {cart.carts.map((item) => (
-                                                <div className="d-flex justify-content-between  fw-bold font-montserrat">
+                                                <div
+                                                    key={item.id}
+                                                    className="d-flex justify-content-between fw-bold font-montserrat"
+                                                >
                                                     <p className="text-muted">
                                                         {item.product.title}
                                                         <span className="ms-1">x{item.qty}</span>
@@ -198,25 +204,32 @@ const Order = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <p className="d-flex justify-content-between fs-9 fs-sm-7 fw-bold font-montserrat mb-7">
-                                        <span>總計</span>
-                                        <span>$ {formatNumber(cart.final_total)}</span>
+                                    <p className="d-flex justify-content-between align-items-center fs-9 fs-sm-7 fw-bold font-montserrat mb-7">
+                                        <span>總金額</span>
+                                        <span>${formatNumber(cart.final_total)}</span>
                                     </p>
                                     <div className="d-flex flex-column gap-2">
                                         <button
                                             type="submit"
                                             form="orderForm"
                                             className="btn btn-primary w-100 py-4 fs-10 fw-bold"
-                                            disabled={!isValid}
+                                            disabled={!isValid || isSubmitting}
                                         >
-                                            前往結帳
+                                            {isSubmitting ? (
+                                                <div className="d-flex justify-content-center align-items-center gap-2">
+                                                    <span className="text-white fs-11">送出訂單</span>
+                                                    <ThreeDots color="white" width="30" height="16" />
+                                                </div>
+                                            ) : (
+                                                '前往結帳'
+                                            )}
                                         </button>
                                         <button
                                             type="button"
                                             className="btn btn-light w-100 py-4 fs-10 fw-bold"
                                             onClick={() => navigate('/cart')}
                                         >
-                                            返回購物清單
+                                            返回購物車
                                         </button>
                                     </div>
                                 </div>
@@ -228,4 +241,5 @@ const Order = () => {
         </>
     );
 };
+
 export default Order;
